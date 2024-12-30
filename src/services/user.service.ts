@@ -15,7 +15,6 @@ class UserService {
 
     public getUsers = async (id: string): Promise<Object> =>{
         const data = await User.find({userId: id});
-        console.log(data)
         return data;
     };
 
