@@ -36,7 +36,7 @@ class AdminRoutes {
     );
 
     this.router.put(
-      '/resetpassword',
+      '/resetpassword/:id',
       this.AdminValidator.resetpassword,
       this.AdminController.resetpassword
     );

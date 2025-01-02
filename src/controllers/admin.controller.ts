@@ -118,20 +118,12 @@ class AdminController {
     next: NextFunction
   ): Promise<any> => {
     try {
-      const data = await this.AdminService.resetpassword(req.params._id, req.body.password);
-      if(data){
-        res.status(HttpStatus.OK).json({
-          code: HttpStatus.OK,
-          data: {},
-          message: 'Password changed successfully'
-        });
-      }else{
-        res.status(HttpStatus.BAD_REQUEST).json({
-          code: HttpStatus.BAD_REQUEST,
-          data: "",
-          message: "Invalid link"
-        })
-      };
+      const data = await this.AdminService.resetpassword(req.params.id, req.body.password);
+      res.status(HttpStatus.OK).json({
+        code: HttpStatus.OK,
+        data: {},
+        message: 'Password changed successfully'
+      });
     } catch (error) {
       next(error);
     }

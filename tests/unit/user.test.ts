@@ -4,12 +4,19 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import app from '../../src/index';
 
-let newUser = {
+let newAdmin = {
   name: "Powell",
   emailId: "PaperBag@gmail.com",
   password: "Balance@bro"
 };
+
 let forgetToken = "";
+let newUser = {
+  name: "Helan",
+  department: "Civil",
+  designation: "Structural Engineer"
+}
+let loginToken = "";
 
 describe('User APIs Test', () => {
   before((done) => {
@@ -33,11 +40,11 @@ describe('User APIs Test', () => {
     done();
   });
 
-  describe('Create User', () => {
+  describe('Create Admin', () => {
     it('should create a new user and return 201 status with success message', (done) => {
       request(app.getApp())
         .post('/api/v1/admin/signup')
-        .send(newUser)
+        .send(newAdmin)
         .expect(201)
         .end((err, res) => {
           if(err){
@@ -51,11 +58,11 @@ describe('User APIs Test', () => {
     });
   });
 
-  describe("Login User", () => {
+  describe("Login Admin", () => {
     it('should log in the user created above and return the 200 status with a token', (done) => {
         const LoginDetails = {
-          emailId: newUser.emailId,
-          password: newUser.password
+          emailId: newAdmin.emailId,
+          password: newAdmin.password
         };
         request(app.getApp())
         .post('/api/v1/admin/login')
@@ -66,8 +73,10 @@ describe('User APIs Test', () => {
             console.error("Error:", err.message);
             return done(err);
           }
+
           expect(res.body).to.have.property('data');
           expect(res.body).to.have.property("message").that.equals("Login Successfull");
+          loginToken = res.body.data.token;
           done();
         })
       });
@@ -77,7 +86,7 @@ describe('User APIs Test', () => {
   describe('Forget Password', () => {
     it("should generate the reset token to reset the password", (done) => {
       const forgetDetails = {
-        emailId: newUser.emailId
+        emailId: newAdmin.emailId
       };
       request(app.getApp())
         .post('/api/v1/admin/forgetpassword')
@@ -114,7 +123,63 @@ describe('User APIs Test', () => {
           expect(res.body).to.have.property("message").that.equals("Password changed successfully");
         })
     })
-  })
+    });
+
+  describe("Create User", () => {
+    it("should create a new user",
+    (done) => {
+      request(app.getApp())
+        .post('/api/v1/users/')
+        .set('Authorization', `Bearer ${loginToken}`)
+        .send(newUser)
+        .expect(201)
+        .end((err, res) => {
+          if(err){
+            console.error("Error:", err.message);
+            return done(err);
+          };
+          expect(res.body).to.have.property("message").that.equals("User created successfully");
+
+          done();
+        })
+    })
+  });
+
+  describe("Update User", () => {
+    it('should update details of existing User', (done) => {
+      request(app.getApp())
+      .put('/api/v1/users/')
+      .set('Authorization', `Bearer ${loginToken}`)
+      .send({name: "trialName"})
+      .expect(200)
+      .end((err, res) => {
+        if(err){
+          console.error("Error:", err.message);
+          return done(err);
+        }
+        expect(res.body).to.have.property("message").that.equals("User updated");
+
+        done();
+      })
+    })
+  });
+
+  describe("Get User", () =>{
+    it('should get the user detail', (done) =>{
+      request(app.getApp())
+      .get('/api/v1/users/all')
+      .set('Authorization', `Bearer ${loginToken}`)
+      .expect(200)
+      .end((err, res) =>{
+        if(err){
+          console.error("Error:", err.message);
+          return done(err);
+        }
+        expect(res.body).to.have.property("message").that.equals("Users fetched");
+        done();
+      })
+    })
+  });
 
 
   });

@@ -10,7 +10,6 @@ import routes from './routes';
 import Database from './config/database';
 import ErrorHandler from './middlewares/error.middleware';
 import Logger from './config/logger';
-
 import morgan from 'morgan';
 
 class App {
@@ -53,6 +52,7 @@ class App {
   public initializeRoutes(): void {
     this.app.use(`/api/${this.api_version}`, routes());
   }
+
 
   public initializeErrorHandlers(): void {
     this.app.use(this.errorHandler.appErrorHandler);

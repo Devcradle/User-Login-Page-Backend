@@ -5,10 +5,12 @@ import upload from '../middlewares/upload.middleware';
 import { userAuth } from '../middlewares/auth.middleware';
 
 
+
 class UserRoutes {
     private UserController = new UserController();
     private router = express.Router();
     private UserValidator = new UserValidator();
+    
     constructor(){
         this.routes();
     }

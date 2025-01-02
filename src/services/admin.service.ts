@@ -14,10 +14,10 @@ class AdminService {
 
   public login = async (emailId: string, password: string): Promise<any> => {
     const user = await Admin.findOne({emailId});
-    const name = user.name;
     if(user === null){
-        return user;  
+      return user;  
     }else {
+      const name = user.name;
       const passwordMatch = await bcrypt.compare(password, user.password);
       if(passwordMatch){
         const token = await UserTokenUtil.generateToken({emailId: user.emailId, id: user._id}, process.env.SECRET_KEY, "24h")

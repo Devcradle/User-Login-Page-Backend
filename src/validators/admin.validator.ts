@@ -40,7 +40,6 @@ class AdminValidator {
 
   public resetpassword = (req: Request, res: Response, next: NextFunction): void =>{
     const schema = Joi.object({
-      emailId: Joi.string().email().required(),
       password: Joi.string().required()
     });
     const {error} = schema.validate(req.body);
