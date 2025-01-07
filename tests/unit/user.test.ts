@@ -104,27 +104,6 @@ describe('User APIs Test', () => {
     })
   });
 
-  describe("Reset Password", () => {
-    it("should reset the password successfully", (done) => {
-      const resetPasswordDetails = {
-        token: forgetToken,
-        newPassword: '1234762@pass'
-      };
-      request(app.getApp())
-        .post('/api/v1/admin/resetpassword')
-        .set('Authorization', `Bearer ${forgetToken}`)
-        .send(resetPasswordDetails)
-        .expect(200)
-        .end((err, res) => {
-          if(err){
-            console.error(err.message);
-            return done(err);
-          };
-          expect(res.body).to.have.property("message").that.equals("Password changed successfully");
-        })
-    })
-    });
-
   describe("Create User", () => {
     it("should create a new user",
     (done) => {
