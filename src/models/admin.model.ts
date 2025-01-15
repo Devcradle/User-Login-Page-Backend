@@ -19,5 +19,4 @@ const adminSchema = new Schema(
   }
 );
 
-
 export default model<IAdmin>('Admin', adminSchema);

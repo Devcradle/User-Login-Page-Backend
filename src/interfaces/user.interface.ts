@@ -1,8 +1,8 @@
-import { Document } from "mongoose";
+import { Document } from 'mongoose';
 
 export interface IUser extends Document {
-    name: string;
-    department: string;
-    designation: string;
-    image?: object;
+  name: string;
+  department: string;
+  designation: string;
+  image?: Record<string, unknown>;
 }

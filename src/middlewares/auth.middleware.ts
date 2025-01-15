@@ -24,9 +24,8 @@ export const userAuth = async (
         message: 'Authorization token is required'
       };
     bearerToken = bearerToken.split(' ')[1];
-
-    const user : any = await jwt.verify(bearerToken, process.env.SECRET_KEY);
-    req.body.userId =  user?.id;
+    const user: any = await jwt.verify(bearerToken, process.env.SECRET_KEY);
+    req.body.userId = user?.id;
     next();
   } catch (error) {
     next(error);

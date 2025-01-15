@@ -42,7 +42,7 @@ class App {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
     this.app.use(morgan('combined', { stream: this.logStream }));
-    this.app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+    this.app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
   }
 
   public initializeDatabase(): void {
@@ -52,7 +52,6 @@ class App {
   public initializeRoutes(): void {
     this.app.use(`/api/${this.api_version}`, routes());
   }
-
 
   public initializeErrorHandlers(): void {
     this.app.use(this.errorHandler.appErrorHandler);

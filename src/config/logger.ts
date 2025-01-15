@@ -38,6 +38,8 @@ class Logger {
      *
      * @param {any} message
      */
+    // eslint-disable-next-line max-len
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     write(message) {
       /**
        * morganLogger logs all http request in a dedicated file and on console

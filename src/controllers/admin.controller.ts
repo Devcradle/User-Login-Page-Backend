@@ -7,8 +7,6 @@ import { Request, Response, NextFunction } from 'express';
 class AdminController {
   public AdminService = new adminService();
 
-
-
   /**
    * Controller to create new user
    * @param  {object} Request - request object
@@ -19,7 +17,7 @@ class AdminController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<any> => {
+  ): Promise<void> => {
     try {
       const data = await this.AdminService.signUp(req.body);
       res.status(HttpStatus.CREATED).json({
@@ -28,50 +26,49 @@ class AdminController {
         message: 'User created successfully'
       });
     } catch (error) {
-      error.code === 11000?
-      res.status(HttpStatus.CONFLICT).json({
-        code: HttpStatus.CONFLICT,
-        data: "",
-        message: "EmailId already present",
-      }):
-      next(error);
+      error.code === 11000
+        ? res.status(HttpStatus.CONFLICT).json({
+            code: HttpStatus.CONFLICT,
+            data: '',
+            message: 'EmailId already present'
+          })
+        : next(error);
     }
   };
-
-
 
   public login = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<any> => {
+  ): Promise<void> => {
     try {
-      const data = await this.AdminService.login(req.body.emailId, req.body.password);
-      if(data === null){
+      const data = await this.AdminService.login(
+        req.body.emailId,
+        req.body.password
+      );
+      if (data === null) {
         res.status(HttpStatus.NOT_FOUND).json({
           code: HttpStatus.NOT_FOUND,
           data: data,
           message: 'EmailId not found'
         });
-      }else if(data === false){
+      } else if (data === false) {
         res.status(HttpStatus.BAD_REQUEST).json({
           code: HttpStatus.BAD_REQUEST,
           data: data,
-          message: "Password mismatched"
+          message: 'Password mismatched'
         });
-      }else{
+      } else {
         res.status(HttpStatus.OK).json({
           code: HttpStatus.OK,
           data: data,
-          message: "Login Successfull"
+          message: 'Login Successfull'
         });
       }
     } catch (error) {
       next(error);
     }
   };
-
-
 
   /**
    * Controller to update a user
@@ -83,28 +80,26 @@ class AdminController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<any> => {
+  ): Promise<void> => {
     try {
       const data = await this.AdminService.forgetpassword(req.body.emailId);
-      if(data === null){
+      if (data === null) {
         res.status(HttpStatus.NOT_FOUND).json({
           code: HttpStatus.NOT_FOUND,
           data: data,
           message: 'EmailId not found'
         });
-      }else{
+      } else {
         res.status(HttpStatus.OK).json({
           code: HttpStatus.OK,
           data: data,
           message: 'Mail sent'
-        })
-      };
+        });
+      }
     } catch (error) {
       next(error);
     }
   };
-
-
 
   /**
    * Controller to delete a single user
@@ -116,9 +111,9 @@ class AdminController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<any> => {
+  ): Promise<void> => {
     try {
-      const data = await this.AdminService.resetpassword(req.params.id, req.body.password);
+      await this.AdminService.resetpassword(req.params.id, req.body.password);
       res.status(HttpStatus.OK).json({
         code: HttpStatus.OK,
         data: {},
@@ -133,7 +128,7 @@ class AdminController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<any> => {
+  ): Promise<void> => {
     try {
       const data = await this.AdminService.getadmin(req.body.userId);
       res.status(HttpStatus.OK).json({
@@ -146,12 +141,11 @@ class AdminController {
     }
   };
 
-
   public editadmin = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<any> => {
+  ): Promise<void> => {
     try {
       const data = await this.AdminService.editadmin(req.body, req.body.userId);
       res.status(HttpStatus.OK).json({
@@ -163,8 +157,6 @@ class AdminController {
       next(error);
     }
   };
-
-
 }
 
 export default AdminController;

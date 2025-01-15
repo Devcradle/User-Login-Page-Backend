@@ -16,6 +16,9 @@
         "allowTemplateLiterals": true
       }
     ],
+    "rules": {
+      "linebreak-style": ["error", "windows"]
+    },
     "semi-style": ["error", "last"],
     "max-len": [
       "error",

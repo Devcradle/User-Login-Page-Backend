@@ -4,7 +4,6 @@ import adminValidator from '../validators/admin.validator';
 import { userAuth } from '../middlewares/auth.middleware';
 import HashingPassword from '../utils/hash.util';
 
-
 class AdminRoutes {
   private AdminController = new adminController();
   private router = express.Router();
@@ -15,7 +14,6 @@ class AdminRoutes {
   }
 
   private routes = () => {
-    
     this.router.post(
       '/signup',
       this.AdminValidator.signup,
@@ -49,13 +47,11 @@ class AdminRoutes {
     );
 
     this.router.put(
-      "",
+      '',
       userAuth,
       this.AdminValidator.editadmin,
       this.AdminController.editadmin
-    )
-
-
+    );
   };
 
   public getRoutes = (): IRouter => {

@@ -2,10 +2,7 @@ import express, { IRouter } from 'express';
 import AdminRoutes from './admin.route';
 import UserRoutes from './user.route';
 
-
 const router = express.Router();
-
-
 
 /**
  * Function contains Application routes
