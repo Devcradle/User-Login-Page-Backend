@@ -17,13 +17,13 @@ export const userAuth = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    let bearerToken = req.cookies.accessToken;
+    let bearerToken = req.cookies.refreshToken;
     if (!bearerToken)
       throw {
         code: HttpStatus.BAD_REQUEST,
         message: 'Authorization token is required'
       };
-    const user : any = await jwt.verify(bearerToken, process.env.SECRET_KEY_2);
+    const user : any = await jwt.verify(bearerToken, process.env.SECRET_KEY);
     req.body.userId =  user?.id;
     next();
   } catch (error) {
