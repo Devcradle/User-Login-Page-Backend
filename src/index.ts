@@ -11,6 +11,7 @@ import Database from './config/database';
 import ErrorHandler from './middlewares/error.middleware';
 import Logger from './config/logger';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
 class App {
   public app: Application;
@@ -37,7 +38,11 @@ class App {
   }
 
   public initializeMiddleWares(): void {
-    this.app.use(cors());
+    this.app.use(cors({
+      origin: 'http://localhost:3000',
+      credentials: true
+    }));
+    this.app.use(cookieParser());
     this.app.use(helmet());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());

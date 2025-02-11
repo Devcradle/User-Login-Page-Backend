@@ -27,6 +27,31 @@ class AdminValidator {
     next();
   };
 
+  public glogin = (req: Request, res: Response, next: NextFunction): void => {
+    const schema = Joi.object({
+      emailId: Joi.string().email().required(),
+      name: Joi.string().required()
+    });
+    const { error } = schema.validate(req.body);
+    if (error) {
+      next(error);
+    }
+    next();
+  };
+
+  public tokenCheck = (req: Request, res: Response, next: NextFunction): void =>{
+    const schema = Joi.object({
+      accessToken: Joi.string().required(),
+      refreshToken: Joi.string().required()
+    });
+    const {accessToken, refreshToken} = req.cookies;
+    const { error } = schema.validate({accessToken, refreshToken});
+    if(error){
+      next(error);
+    }
+    next();
+  };
+
   public forgetpassword = (
     req: Request,
     res: Response,

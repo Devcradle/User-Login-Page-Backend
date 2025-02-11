@@ -28,6 +28,18 @@ class AdminRoutes {
     );
 
     this.router.post(
+      '/glogin',
+      this.AdminValidator.glogin,
+      this.AdminController.glogin
+    );
+
+    this.router.get(
+      '/check',
+      this.AdminValidator.tokenCheck,
+      this.AdminController.tokenCheck
+    )
+
+    this.router.post(
       '/forgetpassword',
       this.AdminValidator.forgetpassword,
       this.AdminController.forgetpassword

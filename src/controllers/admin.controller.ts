@@ -59,12 +59,67 @@ class AdminController {
           message: 'Password mismatched'
         });
       } else {
+        const {name, emailId} = data;
+        res.cookie('accessToken', data.accessToken, {httpOnly: true, secure: false, sameSite: "strict"});
+        res.cookie('refreshToken', data.refreshToken, {httpOnly: true, secure: false, sameSite: "strict"});
         res.status(HttpStatus.OK).json({
           code: HttpStatus.OK,
-          data: data,
+          data: {name, emailId},
           message: 'Login Successfull'
         });
       }
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public glogin = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const data = await this.AdminService.glogin(req.body.emailId);
+      if (data) {
+        const {name, emailId} = data
+        res.cookie('accessToken', data?.accessToken, { httpOnly: true, secure: false, sameSite: "strict" });
+        res.cookie('refreshToken', data?.refreshToken, { httpOnly: true, secure: false, sameSite: "strict" });
+        res.status(HttpStatus.OK).json({
+          code: HttpStatus.OK,
+          data: {name, emailId},
+          message: "Login successfully"
+        });
+      } else {
+        res.status(HttpStatus.NOT_FOUND).json({
+          code: HttpStatus.NOT_FOUND,
+          data: data,
+          message: "EmailId not found"
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public tokenCheck = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const data = await this.AdminService.tokenCheck(
+        req.cookies.accessToken, 
+        req.cookies.refreshToken
+      );
+      console.log(req.cookies.accessToken);
+      console.log(data.newAccessToken);
+      data.newAccessToken ?  res.cookie('accessToken', data.newAccessToken, {httpOnly: true, secure: false, sameSite: "strict"}):
+      null; 
+      res.status(HttpStatus.OK).json({
+        code: HttpStatus.OK,
+        data: true,
+        message: "Token verified successfully"
+      })
     } catch (error) {
       next(error);
     }
