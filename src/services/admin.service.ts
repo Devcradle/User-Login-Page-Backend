@@ -79,7 +79,14 @@ class AdminService {
   ): Promise<any> => {
     try {
       const accessData = await UserTokenUtil.verifyToken(accessToken, process.env.SECRET_KEY_2);
-      return accessToken; 
+      try{
+        const refreshData = await UserTokenUtil.verifyToken(refreshToken, process.env.SECRET_KEY);
+        return accessToken; 
+      }catch(refreshError){
+        const { emailId, id} = accessData as { emailId: string, id: string};
+        const newRefreshToken = await UserTokenUtil.generateToken({emailId, id}, process.env.SECRET_KEY, '24h');
+        await UserTokenUtil.updateToken(newRefreshToken, accessToken, id);
+      }
     } catch (accessError) {
       try {
         const refreshData = await UserTokenUtil.verifyToken(refreshToken, process.env.SECRET_KEY);

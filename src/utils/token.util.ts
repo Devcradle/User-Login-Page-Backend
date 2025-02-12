@@ -66,16 +66,6 @@ class UserTokenUtil {
     }
   }
 
-  public static async removeToken(
-    userId: string
-  ): Promise<unknown> {
-    try{
-      const data = await Token.deleteOne({userId});
-      return data;
-    }catch(error){
-      throw new Error(error);
-    }
-  }
 
 }
 

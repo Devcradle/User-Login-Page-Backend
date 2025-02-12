@@ -111,8 +111,7 @@ class AdminController {
         req.cookies.accessToken, 
         req.cookies.refreshToken
       );
-      console.log(req.cookies.accessToken);
-      console.log(data.newAccessToken);
+      
       data.newAccessToken ?  res.cookie('accessToken', data.newAccessToken, {httpOnly: true, secure: false, sameSite: "strict"}):
       null; 
       res.status(HttpStatus.OK).json({
